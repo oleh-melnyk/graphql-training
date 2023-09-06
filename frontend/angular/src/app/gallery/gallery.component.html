@@ -1,0 +1,68 @@
+<div class="page">
+  <h1 class="title">Gallery</h1>
+  <main class="wrapper gallery">
+    <p-button class="ml-3" label="Back" icon="pi pi-chevron-left" (click)="navigateBack()"></p-button>
+    <p-button class="ml-3" label="Add Photo" icon="pi pi-plus" (click)="showCreateModal()"></p-button>
+    <div class="flex flex-wrap justify-content-between">
+      <ng-container *ngFor="let photo of gallery">
+        <p-card [header]="photo.title">
+          <p-image alt="Image" width="250" [preview]="true" [src]="photo.url"></p-image>
+        </p-card>
+      </ng-container>
+    </div>
+  </main>
+  <div *ngIf="!gallery?.length" class="empty-page">There are no photos in the album.</div>
+
+  <div *ngIf="gallery?.length" class="pagination">
+    <p-paginator
+      [rows]="itemsPerPage"
+      [totalRecords]="info.total || 0"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+  </div>
+</div>
+
+<p-dialog
+  header="Add Photo"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  [(visible)]="isShownCreateModal"
+>
+  <form [formGroup]="createForm">
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        type="text"
+        formControlName="title"
+        id="create-title-name"
+        aria-describedby="create-title-help"
+        class="p-inputtext w-full"
+      />
+      <label for="create-title-name">Title</label>
+    </span>
+    <small *ngIf="createFormErrors.title.length" id="create-title-help" class="p-error">
+      <span *ngFor="let error of createFormErrors.title">{{ error }}</span>
+    </small>
+
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        formControlName="url"
+        id="create-url"
+        aria-describedby="create-url-help"
+        class="p-inputtext w-full"
+      />
+      <label for="create-url">URL</label>
+    </span>
+    <small *ngIf="createFormErrors.url.length" id="create-url-help" class="p-error">
+      <span *ngFor="let error of createFormErrors.url">{{ error }}</span>
+    </small>
+
+    <div class="flex mt-2">
+      <p-button label="Cancel" class="ml-auto" styleClass="p-button-secondary" (onClick)="hideCreateModal()"></p-button>
+      <p-button label="Add Photo" icon="pi pi-save" class="ml-4" (onClick)="createPhoto()"></p-button>
+    </div>
+  </form>
+</p-dialog>

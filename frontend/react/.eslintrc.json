@@ -1,0 +1,53 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "import", "simple-import-sort"],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-undef": "off",
+    "no-var": "error",
+    "semi": "warn",
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "no-tabs": 0,
+    "no-multi-spaces": "warn",
+    "space-in-parens": "warn",
+    "no-multiple-empty-lines": "warn",
+    "prefer-const": "warn",
+    "no-debugger": "warn",
+    "no-console": ["warn"],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
+    "import/no-duplicates": "warn"
+  },
+  "ignorePatterns": [
+    "/.cache",
+    "/.git",
+    "/.husky",
+    "/.yarn",
+    "/*/dist/",
+    "/**/__snapshots__",
+    "/**/__generated__",
+    "/**/node_modules",
+    "/coverage",
+    "/dist/",
+    "*.json",
+    "**/*.json",
+    "*.d.ts"
+  ]
+}

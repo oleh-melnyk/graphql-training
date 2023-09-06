@@ -1,0 +1,86 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+type Comment {
+  body: String
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String
+  postId: ID!
+  updatedAt: DateTime!
+}
+
+type ConnectionInfo {
+  page: Int!
+  pages: Int!
+  total: Int!
+}
+
+input CreateCommentInput {
+  body: String
+  email: String!
+  name: String
+}
+
+input CreatePostInput {
+  body: String
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createComment(createCommentInput: CreateCommentInput!, postId: ID!): Comment!
+  createPost(createPostInput: CreatePostInput!): Post!
+  removeComment(id: Int!): Comment!
+  removePost(id: Int!): Post!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+}
+
+type Post {
+  body: String
+  comments: [Comment!]!
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type PostConnection {
+  data: [Post!]!
+  info: ConnectionInfo!
+}
+
+type Query {
+  comment(id: Int!): Comment!
+  comments: [Comment!]!
+  post(id: Int!): Post!
+  posts: [Post!]!
+  postsPaginated(page: Int! = 1, pageSize: Int! = 5): PostConnection!
+}
+
+type Subscription {
+  postDeleted: Post!
+}
+
+input UpdateCommentInput {
+  body: String
+  email: String
+  id: Int!
+  name: String
+}
+
+input UpdatePostInput {
+  body: String
+  id: Int!
+  title: String
+}
+

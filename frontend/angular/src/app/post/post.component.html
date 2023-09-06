@@ -1,0 +1,96 @@
+<div class="page">
+  <h1 class="title">Post</h1>
+  <div class="wrapper">
+    <main *ngIf="post$ | async as data">
+      <p-button label="Back" icon="pi pi-chevron-left" (click)="navigateBack()"></p-button>
+
+      <p-card styleClass="mt-4" [header]="data.post.title">
+        <div class="flex mb-4">
+          <p-card styleClass="img-tpl"> Image </p-card>
+          <div class="ml-4">{{ data.post.body }}</div>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="mb-2">Add Comment</h4>
+          <form [formGroup]="commentForm">
+            <span class="p-float-label mt-5">
+              <input
+                pInputText
+                type="text"
+                formControlName="email"
+                id="comment-email"
+                aria-describedby="comment-email-help"
+                class="p-inputtext-sm w-full"
+              />
+              <label for="comment-email">Email</label>
+            </span>
+            <small *ngIf="formErrors.email.length" id="comment-email-help" class="p-error">
+              <span *ngFor="let error of formErrors.email">{{ error }}</span>
+            </small>
+
+            <span class="p-float-label mt-5">
+              <input
+                pInputText
+                type="text"
+                formControlName="name"
+                id="comment-name"
+                aria-describedby="comment-name-help"
+                class="p-inputtext-sm w-full"
+              />
+              <label for="comment-name">Name</label>
+            </span>
+            <small *ngIf="formErrors.name.length" id="comment-name-help" class="p-error">
+              <span *ngFor="let error of formErrors.name">{{ error }}</span>
+            </small>
+
+            <span class="p-float-label mt-5">
+              <textarea
+                pInputTextarea
+                formControlName="body"
+                id="comment-body"
+                aria-describedby="comment-body-help"
+                rows="3"
+                cols="30"
+                class="w-full"
+              ></textarea>
+              <label for="comment-body">Body</label>
+            </span>
+            <small *ngIf="formErrors.body.length" id="comment-body-help" class="p-error">
+              <span *ngFor="let error of formErrors.body">{{ error }}</span>
+            </small>
+
+            <div class="flex mt-2">
+              <p-button
+                label="Clear"
+                class="ml-auto"
+                styleClass="p-button-sm p-button-secondary"
+                (onClick)="clearContentForm()"
+              ></p-button>
+              <p-button
+                label="Add Comment"
+                icon="pi pi-save"
+                class="ml-4"
+                styleClass="p-button-sm"
+                (onClick)="createComment()"
+              ></p-button>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="data.post.comments?.length">
+          <h4 class="mb-2">Comments</h4>
+          <div *ngFor="let comment of data.post.comments" class="comment">
+            <dl>
+              <dt>Email</dt>
+              <dd>{{ comment.email }}</dd>
+              <dt>Name</dt>
+              <dd>{{ comment.name }}</dd>
+              <dt>Body</dt>
+              <dd>{{ comment.body }}</dd>
+            </dl>
+          </div>
+        </div>
+      </p-card>
+    </main>
+  </div>
+</div>

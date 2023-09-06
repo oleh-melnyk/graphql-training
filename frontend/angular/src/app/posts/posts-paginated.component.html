@@ -1,0 +1,29 @@
+<div class="page">
+  <h1 class="title">Posts</h1>
+  <div class="wrapper">
+    <div class="mt-4">
+      <ng-container *ngFor="let post of posts">
+        <p-card [header]="post.title" styleClass="mb-6">
+          <div class="flex">
+            <p-card styleClass="img-tpl"> Image </p-card>
+
+            <div class="ml-4">
+              <span>{{ post.body }}</span>
+              <span class="link ml-2" (click)="showDetails(post)">Show details</span>
+            </div>
+          </div>
+        </p-card>
+      </ng-container>
+
+      <div *ngIf="!posts?.length" class="empty-page">There are no posts in the page.</div>
+
+      <div *ngIf="posts?.length" class="pagination">
+        <p-paginator
+          [rows]="itemsPerPage"
+          [totalRecords]="info.total || 0"
+          (onPageChange)="onPageChange($event)"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>

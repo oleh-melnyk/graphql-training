@@ -1,0 +1,11 @@
+<p-menubar [styleClass]="'app-header'" [model]="items">
+  <ng-template pTemplate="start">
+    <img src="/assets/images/cat.png" height="40" class="mr-2 border-round" alt="cat" />
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div *ngIf="statistic$ | async as statistic" class="flex gap-2 mr-2">
+      <p-chip label="Posts: {{ statistic.postsCount }}"></p-chip>
+      <p-chip label="Comments: {{ statistic.commentsCount }}"></p-chip>
+    </div>
+  </ng-template>
+</p-menubar>

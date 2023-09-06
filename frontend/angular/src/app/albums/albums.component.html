@@ -1,0 +1,136 @@
+<div class="page">
+  <h1 class="title">Albums</h1>
+  <div class="wrapper">
+    <p-button label="Add Album" icon="pi pi-plus" (onClick)="showCreateModal()"></p-button>
+
+    <div class="mt-4">
+      <ng-container *ngFor="let album of albums">
+        <p-card [header]="album.title" styleClass="mb-6">
+          <div class="flex justify-content-center">
+            <p-card (click)="showDetails(album)">
+              <p-image alt="Image" width="250" [preview]="true" [src]="album.url"></p-image>
+            </p-card>
+          </div>
+
+          <br />
+          <div class="flex">
+            <div>Photos: <strong>9</strong></div>
+            <p-button
+              icon="pi pi-pencil"
+              class="ml-auto"
+              styleClass="p-button-sm"
+              (onClick)="showEditModal(album)"
+            ></p-button>
+            <p-button
+              icon="pi pi-trash"
+              class="ml-2"
+              styleClass="p-button-sm p-button-danger"
+              (onClick)="deleteAlbum(album)"
+            ></p-button>
+          </div>
+        </p-card>
+      </ng-container>
+
+      <div *ngIf="!albums?.length" class="empty-page">There are no albums in the page.</div>
+
+      <div *ngIf="albums?.length" class="pagination">
+        <p-paginator
+          [rows]="itemsPerPage"
+          [totalRecords]="info.total || 0"
+          (onPageChange)="onPageChange($event)"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  header="Add Album"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  [(visible)]="isShownCreateModal"
+>
+  <form [formGroup]="createForm">
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        type="text"
+        formControlName="title"
+        id="create-title-name"
+        aria-describedby="create-title-help"
+        class="p-inputtext w-full"
+      />
+      <label for="create-title-name">Title</label>
+    </span>
+    <small *ngIf="createFormErrors.title.length" id="create-title-help" class="p-error">
+      <span *ngFor="let error of createFormErrors.title">{{ error }}</span>
+    </small>
+
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        formControlName="url"
+        id="create-url"
+        aria-describedby="create-url-help"
+        class="p-inputtext w-full"
+      />
+      <label for="create-url">URL</label>
+    </span>
+    <small *ngIf="createFormErrors.url.length" id="create-url-help" class="p-error">
+      <span *ngFor="let error of createFormErrors.url">{{ error }}</span>
+    </small>
+
+    <div class="flex mt-2">
+      <p-button label="Cancel" class="ml-auto" styleClass="p-button-secondary" (onClick)="hideCreateModal()"></p-button>
+      <p-button label="Add Album" icon="pi pi-save" class="ml-4" (onClick)="createAlbum()"></p-button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog
+  header="Edit Album"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  [modal]="true"
+  [(visible)]="isShownEditModal"
+>
+  <form [formGroup]="updateForm">
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        type="text"
+        formControlName="title"
+        id="update-title-name"
+        aria-describedby="update-title-help"
+        class="p-inputtext w-full"
+      />
+      <label for="update-title-name">Title</label>
+    </span>
+    <small *ngIf="updateFormErrors.title.length" id="update-title-help" class="p-error">
+      <span *ngFor="let error of updateFormErrors.title">{{ error }}</span>
+    </small>
+
+    <span class="p-float-label mt-5">
+      <input
+        pInputText
+        type="text"
+        formControlName="url"
+        id="update-url"
+        aria-describedby="update-url-help"
+        class="p-inputtext w-full"
+      />
+      <label for="update-url">URL</label>
+    </span>
+    <small *ngIf="updateFormErrors.url.length" id="update-url-help" class="p-error">
+      <span *ngFor="let error of updateFormErrors.url">{{ error }}</span>
+    </small>
+
+    <div class="flex mt-2">
+      <p-button label="Cancel" class="ml-auto" styleClass="p-button-secondary" (onClick)="hideEditModal()"></p-button>
+      <p-button label="Update Album" icon="pi pi-save" class="ml-4" (onClick)="updateAlbum()"></p-button>
+    </div>
+  </form>
+</p-dialog>
