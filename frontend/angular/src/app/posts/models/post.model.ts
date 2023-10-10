@@ -6,6 +6,7 @@ export interface Post {
   body: string;
   userId?: number;
   comments?: Comment[];
+  __typename?: string;
 }
 
 export interface PostParams {

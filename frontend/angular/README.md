@@ -4,13 +4,11 @@ Angular application with GraphQL
 
 
 ## Requirements
-
 - [NodeJS](https://nodejs.org/en) <= v18
 - [NPM](https://www.npmjs.com/) or [Yarn](https://classic.yarnpkg.com/en/)
 
 
 ## Technology stack
-
 - Programming language - [Typescript](https://www.typescriptlang.org/)
 - Framework - [Angular v16](https://angular.io/)
 - GraphQL client - [Apollo Angular](https://the-guild.dev/graphql/apollo-angular/docs)
@@ -19,7 +17,6 @@ Angular application with GraphQL
 
 
 ## Commands
-
 - `$ yarn start:local` - Start local application
 - `$ yarn gql:update-schema` - Update GraphQL schema
 - `$ yarn build` - Build application for production environment

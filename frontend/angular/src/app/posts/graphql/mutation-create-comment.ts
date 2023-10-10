@@ -7,6 +7,7 @@ export const CREATE_COMMENT = gql`
       name
       email
       body
+      __typename
     }
   }
 `;

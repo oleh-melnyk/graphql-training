@@ -4,6 +4,7 @@ export interface Comment {
   name: string;
   email: string;
   body: string;
+  __typename?: string;
 }
 
 export interface CommentParams {

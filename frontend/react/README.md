@@ -4,13 +4,11 @@ React application with GraphQL
 
 
 ## Requirements
-
 - [NodeJS](https://nodejs.org/en) <= v18
 - [NPM](https://www.npmjs.com/) or [Yarn](https://classic.yarnpkg.com/en/)
 
 
 ## Technology stack
-
 - Programming language - [Typescript](https://www.typescriptlang.org/)
 - Framework - [React](https://react.dev/)
 - GraphQL client - [React Apollo Client](https://www.apollographql.com/docs/react/)
@@ -19,7 +17,6 @@ React application with GraphQL
 
 
 ## Commands
-
 - `$ yarn start:local` - Start local application
 - `$ yarn build` - Build application for production environment
 - `$ yarn test` - Run tests

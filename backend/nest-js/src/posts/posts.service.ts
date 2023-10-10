@@ -34,6 +34,11 @@ export class PostsService {
   }
 
   async create(createPostInput: CreatePostInput): Promise<Post> {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(null);
+      }, 2000);
+    });
     return this.postRepository.save(createPostInput);
   }
 

@@ -24,3 +24,9 @@ Training with GraphQL basics that cover server and client parts.
      * [TypeScript](https://www.typescriptlang.org/docs/)
      * [Ant Design](https://ant.design/components/overview/)
      * [React Apollo Client](https://www.apollographql.com/docs/react)
+   * [Optimistic UI](https://www.apollographql.com/docs/react/performance/optimistic-ui/)
+     * [Speeding up GraphQL Mutations with optimistic UI](https://www.apollographql.com/blog/frontend/tutorial-graphql-mutations-optimistic-ui-and-store-updates-f7b6b66bf0e2/)
+   * Request Batching
+     * [Apollo Link overview](https://www.apollographql.com/docs/react/api/link/introduction/)
+     * [Batch HTTP Link](https://www.apollographql.com/docs/react/api/link/apollo-link-batch-http/)
+     * [Batching](https://the-guild.dev/graphql/yoga-server/docs/features/request-batching)

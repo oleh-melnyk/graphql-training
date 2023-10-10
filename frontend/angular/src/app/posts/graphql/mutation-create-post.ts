@@ -6,6 +6,7 @@ export const CREATE_POST = gql`
       id
       title
       body
+      __typename
     }
   }
 `;

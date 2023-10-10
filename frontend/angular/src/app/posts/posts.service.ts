@@ -38,16 +38,24 @@ export class PostsService {
         map(({ data, loading }) => ({
           post: data?.post,
           loading,
-        })),
+        }))
       );
   }
 
   createPost(postParams: PostParams): Observable<Post | undefined> {
     return this.apollo
-      .mutate<{ createPost: Post }>({
+      .mutate<{ __typename: string; createPost: Post }>({
         mutation: CREATE_POST,
         variables: {
           createPost: { ...postParams },
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createPost: {
+            __typename: 'Post',
+            id: Math.round(Math.random() * -1000000),
+            ...postParams,
+          },
         },
         update: (cache, { data }) => {
           const list = cache.readQuery<{ posts: Post[] }>({ query: POSTS });
@@ -87,11 +95,20 @@ export class PostsService {
 
   createComment(postId: number, commentParams: CommentParams): Observable<Comment | undefined> {
     return this.apollo
-      .mutate<{ createComment: Comment }>({
+      .mutate<{ __typename: string; createComment: Comment }>({
         mutation: CREATE_COMMENT,
         variables: {
           postId: postId,
           createComment: { ...commentParams },
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createComment: {
+            __typename: 'Comment',
+            id: Math.round(Math.random() * -1000000),
+            postId,
+            ...commentParams,
+          },
         },
         update: (cache, { data }) => {
           const newComment = data?.createComment;
