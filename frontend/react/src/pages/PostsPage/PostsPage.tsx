@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Button, Card, Form, Input, Layout, Modal, Typography } from 'antd';
 import { Loader } from 'common/components/Loader';
 import { EmptyImageUrl } from 'common/EmptyImage';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const { Content } = Layout;
@@ -33,6 +33,7 @@ const ADD_POST = gql(/* GraphQL */ `
       id
       title
       body
+      __typename
     }
   }
 `);
@@ -60,12 +61,8 @@ export default function PostsPage() {
   const { loading, data } = useQuery(QUERY_POSTS);
   const { posts } = data || {};
 
-  const [createPost, { loading: creating, data: createResponse }] = useMutation(ADD_POST, {
-    refetchQueries: ['posts'],
-  });
   const [createForm] = Form.useForm();
   const [openCreate, setOpenCreate] = useState(false);
-
   const showCreateModal = () => {
     setOpenCreate(true);
   };
@@ -73,19 +70,37 @@ export default function PostsPage() {
     setOpenCreate(false);
     createForm.resetFields();
   }, [createForm]);
-  const submitCreateModal = (post: Post) => {
-    createPost({ variables: { createPost: post } });
-  };
-  useEffect(() => {
-    if (createResponse?.createPost) {
+  const [createPost, { loading: creating }] = useMutation(ADD_POST, {
+    // refetchQueries: ['posts'],
+    onCompleted: () => {
       closeCreateModal();
-    }
-  }, [createResponse, closeCreateModal]);
+    },
+  });
 
-  const [updatePost, { loading: editing, data: editResponse }] = useMutation(UPDATE_POST);
+  const submitCreateModal = (post: Post) => {
+    createPost({
+      variables: { createPost: post },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createPost: {
+          __typename: 'Post',
+          ...post,
+          id: `${Math.round(Math.random() * -1000000)}`,
+        },
+      },
+      update(cache, { data }) {
+        const list: any = cache.readQuery({ query: QUERY_POSTS });
+        cache.writeQuery({
+          query: QUERY_POSTS,
+          data: { posts: [data?.createPost, ...list!.posts] },
+        });
+      },
+    });
+    // closeCreateModal();
+  };
+
   const [editForm] = Form.useForm();
   const [openEdit, setOpenEdit] = useState(false);
-
   const showEditModal = ({ id, title, body }: { id: string; title: string; body?: string | null }) => {
     setOpenEdit(true);
     editForm.setFieldsValue({ id, title, body });
@@ -94,24 +109,26 @@ export default function PostsPage() {
     setOpenEdit(false);
     editForm.resetFields();
   }, [editForm]);
+  const [updatePost, { loading: editing }] = useMutation(UPDATE_POST, {
+    onCompleted: () => {
+      closeEditModal();
+    },
+  });
+
   const submitEditModal = (post: Post) => {
     updatePost({ variables: { updatePost: { ...post, id: +post.id! } } });
   };
-  useEffect(() => {
-    if (editResponse?.updatePost) {
-      closeEditModal();
-    }
-  }, [editResponse, closeEditModal]);
 
-  const [removePost] = useMutation(REMOVE_POST, {
-    update: (cache, _, { variables }) => {
-      const normalizedId = cache.identify({ id: variables!.id, __typename: 'Post' });
-      cache.evict({ id: normalizedId });
-      cache.gc();
-    },
-  });
+  const [removePost] = useMutation(REMOVE_POST);
   const handleDeletePost = (postId: string) => {
-    removePost({ variables: { id: +postId } });
+    removePost({
+      variables: { id: +postId },
+      update: (cache, _, { variables }) => {
+        const normalizedId = cache.identify({ id: variables!.id, __typename: 'Post' });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      },
+    });
   };
 
   const navigateToPost = (postId: string) => {

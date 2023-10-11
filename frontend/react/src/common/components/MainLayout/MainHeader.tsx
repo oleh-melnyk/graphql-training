@@ -7,7 +7,7 @@ import { TopNavigation } from './TopNavigation';
 const { Header } = Layout;
 const { CheckableTag } = Tag;
 
-const QUERY_POSTS_COMMENTS = gql(/* GraphQL */ `
+export const QUERY_POSTS_COMMENTS = gql(/* GraphQL */ `
   query postsComments {
     posts {
       id

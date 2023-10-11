@@ -30,3 +30,4 @@ Training with GraphQL basics that cover server and client parts.
      * [Apollo Link overview](https://www.apollographql.com/docs/react/api/link/introduction/)
      * [Batch HTTP Link](https://www.apollographql.com/docs/react/api/link/apollo-link-batch-http/)
      * [Batching](https://the-guild.dev/graphql/yoga-server/docs/features/request-batching)
+   * [Federation](https://www.apollographql.com/docs/federation/)

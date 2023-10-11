@@ -49,6 +49,7 @@ export class PostsService {
         variables: {
           createPost: { ...postParams },
         },
+        // refetchQueries: [POSTS, 'posts'],
         optimisticResponse: {
           __typename: 'Mutation',
           createPost: {
@@ -84,6 +85,7 @@ export class PostsService {
       .mutate<{ removePost: Post }>({
         mutation: REMOVE_POST,
         variables: { id },
+        // refetchQueries: [POSTS, 'posts'],
         update: (cache) => {
           const normalizedId = cache.identify({ id, __typename: 'Post' });
           cache.evict({ id: normalizedId });
@@ -97,6 +99,7 @@ export class PostsService {
     return this.apollo
       .mutate<{ __typename: string; createComment: Comment }>({
         mutation: CREATE_COMMENT,
+        // refetchQueries: [{ query: POST }, { query: POSTS_COMMENTS }],
         variables: {
           postId: postId,
           createComment: { ...commentParams },
@@ -112,10 +115,10 @@ export class PostsService {
         },
         update: (cache, { data }) => {
           const newComment = data?.createComment;
-
           const postCache = cache.readQuery<{ post: Post }>({ query: POST, variables: { id: postId } });
           const postComments = postCache?.post?.comments || [];
           const updatedPostComments = newComment ? [newComment, ...postComments] : [...postComments];
+
           cache.writeQuery({
             query: POST,
             data: { post: { ...postCache?.post, comments: updatedPostComments } },

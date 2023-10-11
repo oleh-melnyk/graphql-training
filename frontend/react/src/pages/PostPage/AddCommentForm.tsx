@@ -1,9 +1,12 @@
 import { gql } from '__generated__';
-import { Comment } from '__generated__/graphql';
+import { Comment, Post } from '__generated__/graphql';
 import { SaveOutlined } from '@ant-design/icons';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Input, Typography } from 'antd';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+
+import { QUERY_POSTS_COMMENTS } from '../../common/components/MainLayout/MainHeader';
+import { QUERY_POST } from './PostPage';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -20,32 +23,66 @@ type Props = {
 const CREATE_COMMENT = gql(/* GraphQL */ `
   mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {
     createComment(postId: $postId, createCommentInput: $createComment) {
+      postId
       id
       name
       email
       body
+      __typename
     }
   }
 `);
 
 export default function AddCommentForm({ postId }: Props) {
-  const [createComment, { data: createResponse }] = useMutation(CREATE_COMMENT, {
-    refetchQueries: ['post', 'postsComments'],
-  });
   const [form] = Form.useForm();
-
   const clearForm = useCallback(() => {
     form.resetFields();
   }, [form]);
-  const submitComment = (comment: Comment) => {
-    createComment({ variables: { postId, createComment: comment } });
-    clearForm();
-  };
-  useEffect(() => {
-    if (createResponse?.createComment) {
+
+  const [createComment] = useMutation(CREATE_COMMENT, {
+    //refetchQueries: ['post', 'postsComments'],
+    onCompleted: () => {
       clearForm();
-    }
-  }, [createResponse, clearForm]);
+    },
+  });
+  const submitComment = (comment: Comment) => {
+    createComment({
+      variables: { postId, createComment: comment },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createComment: {
+          __typename: 'Comment',
+          ...comment,
+          id: `${Math.round(Math.random() * -1000000)}`,
+          postId: postId,
+        },
+      },
+      update(cache, { data }) {
+        const newComment = data?.createComment as Comment;
+        const postCache = cache.readQuery({ query: QUERY_POST, variables: { id: +postId } });
+        const postComments = postCache?.post?.comments || [];
+        const updatedPostComments = newComment ? [newComment, ...postComments] : [...postComments];
+
+        cache.writeQuery({
+          query: QUERY_POST,
+          data: { post: { ...(postCache?.post as Post), comments: updatedPostComments } },
+        });
+
+        const postsCommentsCache = cache.readQuery<{ posts: Post[]; comments: Comment[] }>({
+          query: QUERY_POSTS_COMMENTS,
+        });
+        const allPosts = postsCommentsCache?.posts || [];
+        const allComments = postsCommentsCache?.comments || [];
+        const updatedAllComments = newComment ? [newComment, ...allComments] : [...allComments];
+
+        cache.writeQuery({
+          query: QUERY_POSTS_COMMENTS,
+          data: { posts: [...allPosts], comments: updatedAllComments },
+        });
+      },
+    });
+    // clearForm();
+  };
 
   return (
     <>

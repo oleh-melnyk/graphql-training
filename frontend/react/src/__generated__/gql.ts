@@ -14,10 +14,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query postsComments {\n    posts {\n      id\n    }\n    comments {\n      id\n    }\n  }\n": types.PostsCommentsDocument,
-    "\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      id\n      name\n      email\n      body\n    }\n  }\n": types.CreateCommentDocument,
+    "\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      postId\n      id\n      name\n      email\n      body\n      __typename\n    }\n  }\n": types.CreateCommentDocument,
     "\n  query post($id: Int!) {\n    post(id: $id) {\n      id\n      title\n      body\n      comments {\n        name\n        email\n        body\n      }\n    }\n  }\n": types.PostDocument,
     "\n  query posts {\n    posts {\n      id\n      title\n      body\n    }\n  }\n": types.PostsDocument,
-    "\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n    }\n  }\n": types.CreatePostDocument,
+    "\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n      __typename\n    }\n  }\n": types.CreatePostDocument,
     "\n  mutation updatePost($updatePost: UpdatePostInput!) {\n    updatePost(updatePostInput: $updatePost) {\n      id\n      title\n      body\n    }\n  }\n": types.UpdatePostDocument,
     "\n  mutation removePost($id: Int!) {\n    removePost(id: $id) {\n      title\n    }\n  }\n": types.RemovePostDocument,
 };
@@ -43,7 +43,7 @@ export function gql(source: "\n  query postsComments {\n    posts {\n      id\n 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      id\n      name\n      email\n      body\n    }\n  }\n"): (typeof documents)["\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      id\n      name\n      email\n      body\n    }\n  }\n"];
+export function gql(source: "\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      postId\n      id\n      name\n      email\n      body\n      __typename\n    }\n  }\n"): (typeof documents)["\n  mutation createComment($postId: ID!, $createComment: CreateCommentInput!) {\n    createComment(postId: $postId, createCommentInput: $createComment) {\n      postId\n      id\n      name\n      email\n      body\n      __typename\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -55,7 +55,7 @@ export function gql(source: "\n  query posts {\n    posts {\n      id\n      tit
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n    }\n  }\n"): (typeof documents)["\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n    }\n  }\n"];
+export function gql(source: "\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n      __typename\n    }\n  }\n"): (typeof documents)["\n  mutation createPost($createPost: CreatePostInput!) {\n    createPost(createPostInput: $createPost) {\n      id\n      title\n      body\n      __typename\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
