@@ -5,6 +5,21 @@ export default `#graphql
     subscription: Subscription
   }
 
+  type Album {
+    id: ID!
+    title: String
+    author: Author
+    photos: [Photo]
+  }
+  
+  type Photo {
+    id: ID!
+    albumId: ID!
+    title: String
+    url: String
+    thumbnailUrl: String
+  }
+  
   type Post {
     id: ID!
     title: String
@@ -60,6 +75,13 @@ export default `#graphql
     comments: [Comment]
     authors: [Author]
     authorsByCity(city: City!): [Author]
+    
+    albums: [Album]
+    album(id: Int!): Album
+    
+    photos: [Photo]
+    photo(id: Int!): Photo
+    photosInAlbum(albumId: Int!): [Photo]
   }
 
   type Mutation {
