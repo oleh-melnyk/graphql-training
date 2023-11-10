@@ -88,9 +88,18 @@ export default `#graphql
     createPost(createPostInput: CreatePostInput!): Post
     updatePost(id: Int!, updatePostInput: UpdatePostInput!): Post
     deletePost(id: Int!): Boolean
+    
     createComment(postId: ID!, createCommentInput: CreateCommentInput!): Comment
     updateComment(id: ID!, updateCommentInput: UpdateCommentInput!): Comment
     deleteComment(id: ID!): Boolean
+    
+    createAlbum(createAlbumInput: CreateAlbumInput!): Album
+    updateAlbum(id: Int!, updateAlbumInput: UpdateAlbumInput!): Album
+    deleteAlbum(id: Int!): Boolean
+    
+    createPhoto(postId: ID!, createPhotoInput: CreatePhotoInput!): Photo
+    updatePhoto(id: ID!, updatePhotoInput: UpdatePhotoInput!): Photo
+    deletePhoto(id: ID!): Boolean
   }
 
   type Subscription {
@@ -117,5 +126,25 @@ export default `#graphql
     name: String
     email: String
     body: String
+  }
+  
+  input CreateAlbumInput {
+    title: String!
+  }
+
+  input UpdateAlbumInput {
+    title: String
+  }
+  
+  input CreatePhotoInput {
+    title: String!
+    url: String!
+    thumbnailUrl: String!
+  }
+
+  input UpdatePhotoInput {
+    title: String
+    url: String
+    thumbnailUrl: String
   }
 `;
