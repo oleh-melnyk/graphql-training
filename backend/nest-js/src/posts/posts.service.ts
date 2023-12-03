@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, UnprocessableEntityException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PubSub } from 'graphql-subscriptions';
@@ -49,9 +49,14 @@ export class PostsService {
 
   async remove(id): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { id } });
+    if (post == null){
+      throw new UnprocessableEntityException('Post entity does not exists with provided ID');
+    }
+
     await pubSub.publish('postDeleted', { postDeleted: post });
     await this.commentsService.removeAllByPostId(id);
+    await this.postRepository.remove(post);
 
-    return this.postRepository.remove(post);
+    return Promise.resolve({ ...post, id });
   }
 }

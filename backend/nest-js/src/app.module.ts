@@ -1,14 +1,17 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommentsModule } from './comments/comments.module';
-import { PostsModule } from './posts/posts.module';
+import {Module} from '@nestjs/common';
+import {GraphQLModule} from '@nestjs/graphql';
+import {ApolloDriver, ApolloDriverConfig} from '@nestjs/apollo';
+import {ConfigModule, ConfigService} from '@nestjs/config';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {CommentsModule} from './comments/comments.module';
+import {PostsModule} from './posts/posts.module';
+import {AlbumsModule} from "./albums/albums.module";
+import {Photo} from "./photos/entities";
+import {PhotosModule} from "./photos/photos.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({isGlobal: true, envFilePath: '.env'}),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -35,6 +38,8 @@ import { PostsModule } from './posts/posts.module';
     }),
     PostsModule,
     CommentsModule,
+    AlbumsModule,
+    PhotosModule
   ],
   controllers: [],
   providers: [],

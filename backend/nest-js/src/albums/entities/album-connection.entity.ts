@@ -1,12 +1,12 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 
-import { Post } from './post.entity';
+import { Album } from './album.entity';
 import {ConnectionInfo} from "../../core";
 
-@ObjectType('PostConnection')
-export class PostConnection {
-  @Field(() => [Post])
-  data: Post[];
+@ObjectType('AlbumConnection')
+export class AlbumConnection {
+  @Field(() => [Album])
+  data: Album[];
 
   @Field(() => ConnectionInfo)
   info: ConnectionInfo;

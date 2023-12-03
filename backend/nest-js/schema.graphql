@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Album {
+  createdAt: DateTime!
+  id: ID!
+  photos: [Photo!]!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type AlbumConnection {
+  data: [Album!]!
+  info: ConnectionInfo!
+}
+
 type Comment {
   body: String
   createdAt: DateTime!
@@ -18,10 +31,20 @@ type ConnectionInfo {
   total: Int!
 }
 
+input CreateAlbumInput {
+  title: String!
+}
+
 input CreateCommentInput {
   body: String
   email: String!
   name: String
+}
+
+input CreatePhotoInput {
+  thumbnailUrl: String
+  title: String!
+  url: String
 }
 
 input CreatePostInput {
@@ -35,12 +58,28 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
+  createAlbum(createAlbumInput: CreateAlbumInput!): Album!
   createComment(createCommentInput: CreateCommentInput!, postId: ID!): Comment!
+  createPhoto(albumId: ID!, createPhotoInput: CreatePhotoInput!): Photo!
   createPost(createPostInput: CreatePostInput!): Post!
+  removeAlbum(id: Int!): Album!
   removeComment(id: Int!): Comment!
+  removePhoto(id: Int!): Photo!
   removePost(id: Int!): Post!
+  updateAlbum(id: Int!, updateAlbumInput: UpdateAlbumInput!): Album!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  updatePhoto(id: Int!, updatePhotoInput: UpdatePhotoInput!): Photo!
   updatePost(updatePostInput: UpdatePostInput!): Post!
+}
+
+type Photo {
+  albumId: ID!
+  createdAt: DateTime!
+  id: ID!
+  thumbnailUrl: String
+  title: String
+  updatedAt: DateTime!
+  url: String
 }
 
 type Post {
@@ -58,8 +97,12 @@ type PostConnection {
 }
 
 type Query {
+  album(id: Int!): Album!
+  albums: [Album!]!
+  albumsPaginated(page: Int! = 1, pageSize: Int! = 5): AlbumConnection!
   comment(id: Int!): Comment!
   comments: [Comment!]!
+  photos(id: Int!): Photo!
   post(id: Int!): Post!
   posts: [Post!]!
   postsPaginated(page: Int! = 1, pageSize: Int! = 5): PostConnection!
@@ -69,11 +112,21 @@ type Subscription {
   postDeleted: Post!
 }
 
+input UpdateAlbumInput {
+  title: String!
+}
+
 input UpdateCommentInput {
   body: String
   email: String
   id: Int!
   name: String
+}
+
+input UpdatePhotoInput {
+  thumbnailUrl: String
+  title: String
+  url: String
 }
 
 input UpdatePostInput {
