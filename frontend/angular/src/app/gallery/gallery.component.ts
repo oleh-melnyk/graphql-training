@@ -48,7 +48,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   }
 
   queryPhotos(page = 1): void {
-    this.galleryService.queryPhotosPaginated(this.albumId, page, this.itemsPerPage).subscribe(({ data, info }) => {
+    this.galleryService.queryPhotosPaginated(+this.albumId, page, this.itemsPerPage).subscribe(({ data, info }) => {
       this.gallery = data;
       this.info = info;
     });

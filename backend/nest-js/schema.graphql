@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Album {
+  coverUrl: String
   createdAt: DateTime!
   id: ID!
   photos: [Photo!]!
@@ -32,6 +33,7 @@ type ConnectionInfo {
 }
 
 input CreateAlbumInput {
+  coverUrl: String
   title: String!
 }
 
@@ -82,6 +84,11 @@ type Photo {
   url: String
 }
 
+type PhotoConnection {
+  data: [Photo!]!
+  info: ConnectionInfo!
+}
+
 type Post {
   body: String
   comments: [Comment!]!
@@ -103,6 +110,7 @@ type Query {
   comment(id: Int!): Comment!
   comments: [Comment!]!
   photos(id: Int!): Photo!
+  photosPaginated(albumId: Int! = 1, page: Int! = 1, pageSize: Int! = 5): PhotoConnection!
   post(id: Int!): Post!
   posts: [Post!]!
   postsPaginated(page: Int! = 1, pageSize: Int! = 5): PostConnection!
@@ -113,6 +121,7 @@ type Subscription {
 }
 
 input UpdateAlbumInput {
+  coverUrl: String
   title: String!
 }
 

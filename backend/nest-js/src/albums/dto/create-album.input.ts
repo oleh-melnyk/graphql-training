@@ -4,4 +4,6 @@ import { InputType, Field } from '@nestjs/graphql';
 export class CreateAlbumInput {
   @Field()
   title: string;
+  @Field({nullable: true})
+  coverUrl: string
 }

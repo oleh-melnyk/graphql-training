@@ -42,7 +42,7 @@ export class AlbumsService {
 
   async update(id, updateAlbumInput: UpdateAlbumInput): Promise<Album> {
     const album = await this.albumRepository.findOne({where: {id}});
-    return this.albumRepository.save({...Album, ...updateAlbumInput});
+    return this.albumRepository.save({...album, ...updateAlbumInput});
   }
 
   async remove(id): Promise<Album> {

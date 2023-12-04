@@ -16,31 +16,31 @@ export class AlbumsComponent implements OnInit, OnDestroy {
   albums!: Album[];
   info!: ConnectionInfo;
   editAlbum!: Album | null;
-  itemsPerPage = 3;
+  itemsPerPage = 5;
   isShownCreateModal = false;
   isShownEditModal = false;
 
   createForm = new UntypedFormGroup({
     title: new UntypedFormControl(null, Validators.required),
-    url: new UntypedFormControl(null, Validators.required),
+    coverUrl: new UntypedFormControl(null, Validators.required),
   });
   createFormErrors = {
     title: [],
-    url: [],
+    coverUrl: [],
   };
 
   updateForm = new UntypedFormGroup({
     title: new UntypedFormControl(null, Validators.required),
-    url: new UntypedFormControl(null, Validators.required),
+    coverUrl: new UntypedFormControl(null, Validators.required),
   });
   updateFormErrors = {
     title: [],
-    url: [],
+    coverUrl: [],
   };
 
   private validationMessages: FormValidationMessages = {
     title: { required: 'Field is required' },
-    url: { required: 'Field is required' },
+    coverUrl: { required: 'Field is required' },
   };
   private unsubscribe$ = new Subject<void>();
 
@@ -101,10 +101,10 @@ export class AlbumsComponent implements OnInit, OnDestroy {
     this.createForm.reset();
   }
 
-  showEditModal({ title, url, ...rest }: Album): void {
+  showEditModal({ title, coverUrl, ...rest }: Album): void {
     this.isShownEditModal = true;
-    this.editAlbum = { ...rest, title, url };
-    this.updateForm.setValue({ title, url });
+    this.editAlbum = { ...rest, title, coverUrl };
+    this.updateForm.setValue({ title, coverUrl });
   }
 
   hideEditModal(): void {

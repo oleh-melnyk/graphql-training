@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 
 import { CreatePhotoInput, UpdatePhotoInput } from './dto';
 import { Photo } from './entities';
+import {AlbumConnection} from "../albums/entities";
+import {PhotoConnection} from "./entities/photo-connection.entity";
 
 @Injectable()
 export class PhotosService {
@@ -15,6 +17,15 @@ export class PhotosService {
 
   async findAllByAlbumId(albumId): Promise<Photo[]> {
     return this.photoRepository.find({ where: { albumId }, order: { id: 'DESC' } });
+  }
+
+  async photosPaginated(albumId, page, pageSize): Promise<PhotoConnection> {
+    const skip = (page - 1) * pageSize;
+    const data = await this.photoRepository.find({where: { albumId }, skip, take: pageSize, order: {id: 'DESC'}});
+    const total = await this.photoRepository.count();
+    const pages = Math.ceil(total / pageSize);
+
+    return {data, info: {page, pages, total}};
   }
 
   async findOne(id): Promise<Photo> {

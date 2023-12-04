@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {ObjectType, Field, ID} from '@nestjs/graphql';
 import {Photo} from "../../photos/entities";
 
 @ObjectType()
@@ -12,6 +12,10 @@ export class Album {
   @Field()
   @Column()
   title: string;
+
+  @Field({nullable: true})
+  @Column({nullable: true})
+  coverUrl: string
 
   @Field((type) => [Photo])
   photos: Photo[];
