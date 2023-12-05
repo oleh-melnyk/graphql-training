@@ -67,7 +67,8 @@ export class PostsComponent implements OnInit, OnDestroy {
     }
 
     const post = trimValue(this.createForm.value);
-    this.postsService.createPost(post).subscribe(this.hideCreateModal.bind(this));
+    this.postsService.createPost(post).subscribe();
+    this.hideCreateModal();
   }
 
   updatePost(): void {

@@ -2,7 +2,7 @@ import { gql } from 'apollo-angular';
 
 export const ALBUM = gql`
   query album($id: Int!) {
-    post(id: $id) {
+    album(id: $id) {
       id
       title
       photos {

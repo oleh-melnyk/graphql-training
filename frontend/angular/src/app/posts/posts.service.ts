@@ -69,15 +69,35 @@ export class PostsService {
       .pipe(map(({ data }) => data?.createPost));
   }
 
-  updatePost(id: number, postParams: PostParams): Observable<Post | undefined> {
+  updatePost(postId: number, postParams: PostParams): Observable<Post | undefined> {
     return this.apollo
-      .mutate<{ updatePost: Post }>({
-        mutation: UPDATE_POST,
-        variables: {
-          updatePost: { id, ...postParams },
+    .mutate<{ __typename: string; updatePost: Post }>({
+      mutation: UPDATE_POST,
+      variables: {
+        updatePost: { id: postId, ...postParams },
+      },
+      // refetchQueries: [POSTS, 'posts'],
+      optimisticResponse: {
+        __typename: 'Mutation',
+        updatePost: {
+          __typename: 'Post',
+          id: postId,
+          ...postParams,
         },
-      })
-      .pipe(map(({ data }) => data?.updatePost));
+      },
+      update: (cache, { data }) => {
+        const list = cache.readQuery<{ posts: Post[] }>({ query: POSTS });
+        const posts = (list?.posts || []).map(({ id, ...post }) =>
+          postId === id ? { id, ...post, ...data?.updatePost } : { id, ...post }
+        );
+
+        cache.writeQuery({
+          query: POSTS,
+          data: { posts },
+        });
+      },
+    })
+    .pipe(map(({ data }) => data?.updatePost));
   }
 
   removePost(id: number): Observable<Post | undefined> {

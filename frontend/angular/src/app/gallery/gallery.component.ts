@@ -65,7 +65,8 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
 
     const photo = trimValue(this.createForm.value);
-    this.galleryService.createPhoto(this.albumId, photo).subscribe(this.hideCreateModal.bind(this));
+    this.galleryService.createPhoto(this.albumId, photo).subscribe();
+    this.hideCreateModal();
   }
 
   showCreateModal(): void {

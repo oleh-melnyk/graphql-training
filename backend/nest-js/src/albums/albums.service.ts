@@ -42,6 +42,12 @@ export class AlbumsService {
 
   async update(id, updateAlbumInput: UpdateAlbumInput): Promise<Album> {
     const album = await this.albumRepository.findOne({where: {id}});
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(null);
+      }, 2000);
+    });
+
     return this.albumRepository.save({...album, ...updateAlbumInput});
   }
 

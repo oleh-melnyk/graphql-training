@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConnectionInfo, Album } from 'src/app/albums/models';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { FormValidationMessages, getFormErrors, trimValue } from 'src/app/@shared/utils';
-import { Subject, takeUntil } from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
 import { Router } from '@angular/router';
 import { AlbumsService } from 'src/app/albums/albums.service';
 import { PaginatorState } from 'primeng/paginator';
@@ -74,7 +74,8 @@ export class AlbumsComponent implements OnInit, OnDestroy {
     }
 
     const album = trimValue(this.createForm.value);
-    this.albumsService.createAlbum(album).subscribe(this.hideCreateModal.bind(this));
+    this.albumsService.createAlbum(album).subscribe();
+    this.hideCreateModal();
   }
 
   updateAlbum(): void {
@@ -85,7 +86,8 @@ export class AlbumsComponent implements OnInit, OnDestroy {
 
     const { id } = this.editAlbum || {};
     const album = trimValue(this.updateForm.value);
-    this.albumsService.updateAlbum(+id!, album).subscribe(this.hideEditModal.bind(this));
+    this.albumsService.updateAlbum(+id!, album).subscribe();
+    this.hideEditModal();
   }
 
   deleteAlbum({ id }: Album): void {
